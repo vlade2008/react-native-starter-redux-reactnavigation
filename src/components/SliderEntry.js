@@ -5,13 +5,10 @@ import { ParallaxImage } from 'react-native-snap-carousel';
 import styles from '../styles/SliderEntry.style';
 
 export default class SliderEntry extends Component {
+  constructor(props){
+    super(props)
+  }
 
-    static propTypes = {
-        data: PropTypes.object.isRequired,
-        even: PropTypes.bool,
-        parallax: PropTypes.bool,
-        parallaxProps: PropTypes.object
-    };
 
     get image () {
         const { data: { illustration }, parallax, parallaxProps, even } = this.props;
@@ -33,13 +30,13 @@ export default class SliderEntry extends Component {
             />
         );
     }
-
     render () {
-        const { data: { title, subtitle }, even } = this.props;
+
+        const { data: { title, subtitle, activeHome }, even } = this.props;
 
         const uppercaseTitle = title ? (
             <Text
-              style={[styles.title, even ? styles.titleEven : {}]}
+              style={[styles.title,styles.titleEven]}
               numberOfLines={2}
             >
                 { title.toUpperCase() }
@@ -47,25 +44,29 @@ export default class SliderEntry extends Component {
         ) : false;
 
         return (
-            <TouchableOpacity
-              activeOpacity={1}
-              style={styles.slideInnerContainer}
-              onPress={() => { alert(`You've clicked '${title}'`); }}
-              >
-                <View style={[styles.imageContainer, even ? styles.imageContainerEven : {}]}>
+            <View style={styles.slideInnerContainer}>
+                <View style={[styles.imageContainer, styles.imageContainerEven]}>
                     { this.image }
-                    <View style={[styles.radiusMask, even ? styles.radiusMaskEven : {}]} />
+                    <View style={[styles.radiusMask,styles.radiusMaskEven]} />
                 </View>
                 <View style={[styles.textContainer, styles.textContainerEven]}>
                     { uppercaseTitle }
                     <Text
-                      style={[styles.subtitle, even ? styles.subtitleEven : {}]}
+                      style={[styles.subtitle,styles.subtitleEven]}
                       numberOfLines={2}
                     >
                         { subtitle }
                     </Text>
+                    {
+                      activeHome ? (
+                        <TouchableOpacity onPress={()=>{activeHome()}}>
+                          <Text style={[styles.subtitle,styles.subtitleEven]}>See more..</Text>
+                        </TouchableOpacity>
+                      ) : null
+                    }
+
                 </View>
-            </TouchableOpacity>
+            </View>
         );
     }
 }

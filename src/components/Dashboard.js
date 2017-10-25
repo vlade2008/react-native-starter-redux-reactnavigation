@@ -8,11 +8,11 @@ import { sliderWidth, itemWidth } from '../styles/SliderEntry.style';
 import styles, { colors } from '../styles/index.style';
 import SliderEntry from './SliderEntry';
 
-import LinearGradient from 'react-native-linear-gradient';
-
 export default class Dashboard extends React.Component {
   constructor(props){
     super(props);
+
+    this.meThis = this;
 
     this.state = {
       slider1ActiveSlide: 0,
@@ -31,10 +31,15 @@ export default class Dashboard extends React.Component {
         {
             title: 'White Pocket Sunset',
             subtitle: 'Lorem ipsum dolor sit amet et nuncat ',
-            illustration: 'http://i.imgur.com/MABUbpDl.jpg'
+            illustration: 'http://i.imgur.com/MABUbpDl.jpg',
+            activeHome:this.onHandleChangeNav
         },
       ]
     }
+  }
+
+  onHandleChangeNav = () =>{
+      this.props.navigation.navigate('home');
   }
 
   _renderItem ({item, index}) {
@@ -50,14 +55,17 @@ export default class Dashboard extends React.Component {
               even={(index + 1) % 2 === 0}
               parallax={true}
               parallaxProps={parallaxProps}
+
             />
         );
     }
 
 
+
+
   render() {
     return (
-      <View style={{flex:1}}>
+      <View style={{flex:1,backgroundColor:'gray'}}>
         <Carousel
           ref={(c) => { if (!this.state.slider1Ref) { this.setState({ slider1Ref: c }); } }}
           data={this.state.data}
@@ -71,7 +79,6 @@ export default class Dashboard extends React.Component {
           enableMomentum={false}
           containerCustomStyle={styles.slider}
           contentContainerCustomStyle={styles.sliderContentContainer}
-          autoplay={false}
           onSnapToItem={(index) => this.setState({ slider1ActiveSlide: index }) }
         />
         <Pagination
